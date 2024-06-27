@@ -19,11 +19,12 @@ std::map<std::string, Lexer::Type> defineKeyWords() {
 std::map<std::string, Lexer::Type> Keywords = defineKeyWords();
 
 namespace Lexer {
+
     Token createToken(std::string value, Type type) {
-        Token buffer;
-        buffer.value = value;
-        buffer.type = type;
-        return buffer;
+        Token token;
+        token.value = value;
+        token.type = type;
+        return token;
     }
 
     bool tokenizedSingleChars(std::vector<Token> *tokens, char c) {
@@ -54,7 +55,7 @@ namespace Lexer {
 
     bool isAlphabet(const std::string& str) {
         for (char c : str) {
-            if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z' || c == '"'))) {
+            if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
                 return false;
             }
         }
@@ -71,7 +72,6 @@ namespace Lexer {
     }
 
     bool tokenizedMultiChars(std::vector<Token> *tokens, const std::string& source, size_t &index) {
-
         std::string buffer;
         char currentChar = source[index];
 
@@ -82,15 +82,13 @@ namespace Lexer {
             }
         }
 
-        while (index < source.size() && (isAlphabet(std::string(1, currentChar)) || isInteger(std::string(1, currentChar)))) {
+        while (index < source.size() && (std::isalpha(currentChar) || std::isdigit(currentChar) || currentChar == '"')) {
             buffer += currentChar;
             index++;
             if (index < source.size()) {
                 currentChar = source[index];
             }
         }
-
-        index--;
 
         if (!buffer.empty()) {
             auto it = Keywords.find(buffer);
@@ -105,17 +103,23 @@ namespace Lexer {
             }
             return true;
         }
+
         return false;
     }
 
     std::vector<Token> tokenized(std::string source) {
         std::vector<Token> tokens;
-
-        for (size_t i = 0; i < source.size(); i++) {
-            if (tokenizedSingleChars(&tokens, source[i])) {
-                continue;
-            } else if (tokenizedMultiChars(&tokens, source, i)) {
-                continue;
+        size_t index = 0;
+        
+        while (index < source.size()) {
+            if (tokenizedSingleChars(&tokens, source[index])) {
+                index++;
+            } else if (tokenizedMultiChars(&tokens, source, index)) {
+                index++;
+            } else {
+                // Handle unrecognized characters or errors
+                std::cout << "unknown token: " << std::endl;
+                index++;
             }
         }
 

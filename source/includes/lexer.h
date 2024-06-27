@@ -19,7 +19,6 @@ namespace Lexer {
         Equal,
         LeftBrace,
         RightBrace,
-
         Unknown
     };
 
