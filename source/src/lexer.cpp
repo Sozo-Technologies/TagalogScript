@@ -44,6 +44,11 @@ namespace Lexer {
                 tokens->push_back(createToken(temp, Type::LeftBrace));
                 return true;
             }
+            case ':': {
+                std::string temp(1, c);
+                tokens->push_back(createToken(temp, Type::Unknown));
+                return true;
+            }
             case ')': case '}': case ']': {
                 std::string temp(1, c);
                 tokens->push_back(createToken(temp, Type::RightBrace));
@@ -82,7 +87,31 @@ namespace Lexer {
             }
         }
 
-        while (index < source.size() && (std::isalpha(currentChar) || std::isdigit(currentChar) || currentChar == '"')) {
+        if (currentChar == '"') {
+            buffer += currentChar;
+            index++;
+            if (index < source.size()) {
+                currentChar = source[index];
+            }
+
+            while (index < source.size() && currentChar != '"') {
+                buffer += currentChar;
+                index++;
+                if (index < source.size()) {
+                    currentChar = source[index];
+                }
+            }
+
+            if (index < source.size() && currentChar == '"') {
+                buffer += currentChar;
+                index++;
+            }
+
+            tokens->push_back(createToken(buffer, Type::String));
+            return true;
+        }
+
+        while (index < source.size() && (std::isalpha(currentChar) || std::isdigit(currentChar))) {
             buffer += currentChar;
             index++;
             if (index < source.size()) {
@@ -107,7 +136,10 @@ namespace Lexer {
         return false;
     }
 
+
     std::vector<Token> tokenized(std::string source) {
+        
+
         std::vector<Token> tokens;
         size_t index = 0;
         
@@ -117,12 +149,36 @@ namespace Lexer {
             } else if (tokenizedMultiChars(&tokens, source, index)) {
                 index++;
             } else {
-                // Handle unrecognized characters or errors
                 std::cout << "unknown token: " << std::endl;
                 index++;
             }
         }
-
         return tokens;
+    }
+
+    std::vector<StringyfiedToken> tokenStringify(std::vector<Token> tokens) {
+        const char* strtoken[] = {
+            "Number",
+            "String",
+            "Boolean",
+            "Keyword",
+            "Constant",
+            "Identifier",
+            "Operator",
+            "Equal",
+            "LeftBrace",
+            "RightBrace",
+            "Unknown"
+        };
+        std::vector<StringyfiedToken> strToken;
+
+        for(size_t i = 0; i < tokens.size(); i++ ) {
+            StringyfiedToken buffer;
+            buffer.value = tokens[i].value;
+            buffer.type = strtoken[tokens[i].type];
+            strToken.push_back(buffer);
+        }
+
+        return strToken;
     }
 }

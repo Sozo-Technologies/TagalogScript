@@ -6,13 +6,14 @@
 
 std::string getSourceCode(const char* target);
 
-int main() {
+int main(int argc, char* argv[]) {
 
     std::string source_code = getSourceCode("test.ph");
     std::vector<Lexer::Token> Tokens = Lexer::tokenized(source_code);
+    std::vector<Lexer::StringyfiedToken> stringifyToken = Lexer::tokenStringify(Tokens);
 
-    for( Lexer::Token Token : Tokens) {
-        printf("{ value: \"%s\" : type: %i } \n", Token.value.c_str(), Token.type);
+    for( Lexer::StringyfiedToken Token : stringifyToken) {
+        printf("{ value: \"%s\" : type: %s } \n", Token.value.c_str(), Token.type);
     }
 }
 
