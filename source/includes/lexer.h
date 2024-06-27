@@ -11,7 +11,8 @@ namespace Lexer {
     enum Type {
         Number,
         String,
-        Boolean,
+        NumberDecleration,
+        StringDecleration,
         Keyword,
         Constant,
         Identifier,

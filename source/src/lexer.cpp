@@ -6,15 +6,19 @@
 
 
 std::map<std::string, Lexer::Type> defineKeyWords() {
-    std::map<std::string, Lexer::Type> buffer;
+    std::map<std::string, Lexer::Type> tokens;
 
-    buffer["true"] = Lexer::Boolean;
-    buffer["false"] = Lexer::Boolean;
+    //Decleration
+    tokens["textong"] = Lexer::StringDecleration;
+    tokens["numerong"] = Lexer::NumberDecleration;
 
-    buffer["let"] = Lexer::Keyword;
-    buffer["const"] = Lexer::Constant;
+    //Assignment
+    tokens["bilang"] = Lexer::Equal;
 
-    return buffer;
+    tokens["let"] = Lexer::Keyword;
+    tokens["const"] = Lexer::Constant;
+
+    return tokens;
 }
 std::map<std::string, Lexer::Type> Keywords = defineKeyWords();
 
@@ -160,7 +164,8 @@ namespace Lexer {
         const char* strtoken[] = {
             "Number",
             "String",
-            "Boolean",
+            "NumberDecleration",
+            "StringDecleration",
             "Keyword",
             "Constant",
             "Identifier",
