@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef LEXER_H
-#define LEXER_H
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -20,6 +17,7 @@ namespace Lexer {
         Equal,
         LeftBrace,
         RightBrace,
+        FunctionDecleration,
         Unknown
     };
 
@@ -32,9 +30,6 @@ namespace Lexer {
         std::string value;
         const char* type;
     };
-
     std::vector<Token> tokenized(std::string source);
     std::vector<StringyfiedToken> tokenStringify(std::vector<Token> tokens);
 }
-
-#endif

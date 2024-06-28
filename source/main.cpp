@@ -1,35 +1,29 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <fstream>
-#include "includes/lexer.h"
 
-std::string getSourceCode(const char* target);
+#include "headers/ast.h"
+#include "headers/lexer.h"
+
+void printAST(AST::Prototype ast);
 
 int main(int argc, char* argv[]) {
-
-    std::string source_code = getSourceCode("test.ph");
-    std::vector<Lexer::Token> Tokens = Lexer::tokenized(source_code);
-    std::vector<Lexer::StringyfiedToken> stringifyToken = Lexer::tokenStringify(Tokens);
-
-    for( Lexer::StringyfiedToken Token : stringifyToken) {
-        printf("{ value: \"%s\" : type: %s } \n", Token.value.c_str(), Token.type);
-    }
+    AST::Prototype ast = AST::createPrototype("test.ph");
+    printAST(ast);
 }
 
-std::string getSourceCode(const char* target) {
-    std::string buffer;
+void printAST(AST::Prototype ast) {
+    for (AST::Statement statement : ast) {
+        std::cout << "-------------------------------------" << '\n';
+        std::cout << "Line Number: " << statement.line << '\n';
+        std::cout << "NodeType: " << statement.type << '\n';
+        std::cout << "Statement:" << '\n';
 
-    std::ifstream infile(target);
-    if(infile.is_open()) {
-        std::string line;
-        while(getline(infile,line)) {
-            buffer += line + '\n';
+        std::vector<Lexer::StringyfiedToken> tokens = Lexer::tokenStringify(statement.statement);
+        for (const Lexer::StringyfiedToken& token : tokens) {
+            printf("{ value: \"%s\" : type: %s }\n", token.value.c_str(), token.type);
         }
-        infile.close();
-    }else {
-        std::cerr << "Error Reading the File" << std::endl;
-    }
 
-    return buffer;
+        std::cout << "-------------------------------------" << '\n';
+    }
 }

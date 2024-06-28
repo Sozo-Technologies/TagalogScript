@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "../includes/lexer.h"
+#include "../headers/lexer.h"
 
 
 std::map<std::string, Lexer::Type> defineKeyWords() {
@@ -17,6 +17,21 @@ std::map<std::string, Lexer::Type> defineKeyWords() {
 
     tokens["let"] = Lexer::Keyword;
     tokens["const"] = Lexer::Constant;
+
+    //Loop
+    tokens["para"] = Lexer::Keyword;
+    tokens["sa"] = Lexer::Keyword;
+    tokens["mula"] = Lexer::Equal;
+    tokens["hanggang"] = Lexer::Keyword;
+
+    //Function
+    tokens["pamamaraan"] = Lexer::FunctionDecleration;
+    tokens["na"] = Lexer::Keyword;
+    tokens["namayroong"] = Lexer::Keyword;
+    tokens["at"] = Lexer::Keyword;
+
+    //End
+    tokens["katapusan"] = Lexer::Keyword;
 
     return tokens;
 }
@@ -50,7 +65,7 @@ namespace Lexer {
             }
             case ':': {
                 std::string temp(1, c);
-                tokens->push_back(createToken(temp, Type::Unknown));
+                tokens->push_back(createToken(temp, Type::Keyword));
                 return true;
             }
             case ')': case '}': case ']': {
@@ -153,7 +168,6 @@ namespace Lexer {
             } else if (tokenizedMultiChars(&tokens, source, index)) {
                 index++;
             } else {
-                std::cout << "unknown token: " << std::endl;
                 index++;
             }
         }
@@ -173,6 +187,7 @@ namespace Lexer {
             "Equal",
             "LeftBrace",
             "RightBrace",
+            "FunctionDecleration",
             "Unknown"
         };
         std::vector<StringyfiedToken> strToken;

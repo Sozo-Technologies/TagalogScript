@@ -1,3 +1,3 @@
 @echo off
 
-g++ -o test main.cpp src/*.cpp
+g++ -o test main.cpp structure/*.cpp
