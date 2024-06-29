@@ -30,6 +30,10 @@ namespace Lexer {
         std::string value;
         const char* type;
     };
-    std::vector<Token> tokenized(std::string source);
-    std::vector<StringyfiedToken> tokenStringify(std::vector<Token> tokens);
+
+    typedef std::vector<Token> Tokens;
+    typedef std::vector<StringyfiedToken> StringedTokens;
+
+    Tokens tokenized(std::string source);
+    StringedTokens tokenStringify(Tokens tokens);
 }

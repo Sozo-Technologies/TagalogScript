@@ -19,7 +19,8 @@ namespace AST {
         IF_Decleration,
         IF_ELSE_Decleration,
         Blank,
-        Imports
+        Imports,
+        Unknown
     };
 
     struct Statement {

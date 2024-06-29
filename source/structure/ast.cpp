@@ -7,11 +7,20 @@
 #include "../headers/ast.h"
 
 namespace AST {
+
+    AST::Type specifyType(Lexer::Tokens tokens) {
+
+        if(tokens.empty()) return AST::Type::Blank;
+
+        return AST::Type::Unknown;
+    }
+
     AST::Statement createStatement(int line, std::string source) {
         AST::Statement buffer;
-        buffer.type = AST::Type::EndOFLine;
+        Lexer::Tokens statement = Lexer::tokenized(source);
+        buffer.type = specifyType(statement);
         buffer.line = line;
-        buffer.statement = Lexer::tokenized(source);
+        buffer.statement = statement;
         return buffer;
     }
 

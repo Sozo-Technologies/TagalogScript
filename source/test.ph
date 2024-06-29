@@ -1,4 +1,4 @@
-textong name bilang "James"
+textong name bilang "Rose"
 
 para sa numerong i bilang 0 hanggang 10 :
 
@@ -10,5 +10,5 @@ para sa numerong i bilang 0 hanggang 10 :
 katapusan
 
 textong pamamaraan na add namayroong numerong a at numerong b :
-
+    a + b;
 katapusan
