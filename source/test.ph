@@ -1,4 +1,5 @@
 textong name bilang "Rose"
+name bilang "Justine";
 
 para sa numerong i bilang 0 hanggang 10 :
 
